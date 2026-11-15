@@ -1,0 +1,496 @@
+<!DOCTYPE html>
+<html lang="my">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Happy Birthday My Love</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Padauk:wght@400;700&family=Playfair+Display:ital,wght@0,600;1,600&display=swap');
+
+  * {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    user-select: none;
+  }
+
+  body {
+    font-family: 'Padauk', sans-serif;
+    background-color: #fdfbf7;
+    color: #5c4d3c;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    overflow: hidden;
+  }
+
+  .container {
+    width: 100%;
+    max-width: 400px;
+    padding: 25px;
+    text-align: center;
+    background: #fcf9f2;
+    border-radius: 25px;
+    box-shadow: 0 10px 30px rgba(184, 159, 125, 0.15);
+    border: 1px solid #ede4d3;
+    position: relative;
+  }
+
+  .screen {
+    display: none;
+    animation: fadeIn 0.6s ease;
+  }
+
+  .screen.active {
+    display: block;
+  }
+
+  @keyframes fadeIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  h1 {
+    font-family: 'Playfair Display', 'Padauk', serif;
+    font-size: 28px;
+    margin-bottom: 8px;
+    color: #4a3c2c;
+  }
+
+  p.subtitle {
+    font-size: 14px;
+    color: #8c7a65;
+    margin-bottom: 25px;
+  }
+
+  /* Screen 1: Passcode */
+  .code-dots {
+    display: flex;
+    justify-content: center;
+    gap: 12px;
+    margin-bottom: 25px;
+  }
+
+  .dot {
+    width: 45px;
+    height: 45px;
+    border: 1.5px solid #d4c3a3;
+    border-radius: 12px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 20px;
+    color: #d98a8a;
+    background: #fff;
+  }
+
+  .keypad {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 12px;
+    max-width: 280px;
+    margin: 0 auto;
+  }
+
+  .key {
+    padding: 15px;
+    font-size: 18px;
+    font-weight: bold;
+    border: 1px solid #d4c3a3;
+    border-radius: 15px;
+    background: #fff;
+    color: #5c4d3c;
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+
+  .key:active {
+    background: #f3ece0;
+    transform: scale(0.95);
+  }
+
+  .key.action {
+    font-size: 13px;
+    color: #8c7a65;
+  }
+
+  /* Screen 2: Hold Heart */
+  .heart-btn-wrapper {
+    position: relative;
+    width: 120px;
+    height: 120px;
+    margin: 30px auto;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .heart-btn {
+    width: 90px;
+    height: 90px;
+    border-radius: 50%;
+    background: #fff;
+    border: 2px solid #e6d8c3;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+    font-size: 40px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    transition: transform 0.2s;
+    z-index: 2;
+  }
+
+  .heart-btn:active {
+    transform: scale(0.9);
+  }
+
+  .progress-ring {
+    position: absolute;
+    top: 0;
+    left: 0;
+    transform: rotate(-90deg);
+  }
+
+  /* Screen 3: Cake */
+  .cake-container {
+    margin: 30px auto;
+    position: relative;
+    width: 200px;
+    height: 180px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-end;
+  }
+
+  .candle {
+    width: 12px;
+    height: 40px;
+    background: repeating-linear-gradient(45deg, #fff, #fff 5px, #e8b4b8 5px, #e8b4b8 10px);
+    border-radius: 4px;
+    position: relative;
+    cursor: pointer;
+  }
+
+  .flame {
+    width: 16px;
+    height: 24px;
+    background: radial-gradient(ellipse at bottom, #fff 0%, #ffdb58 40%, #ff8c00 100%);
+    border-radius: 50% 50% 20% 20%;
+    position: absolute;
+    top: -26px;
+    left: -2px;
+    box-shadow: 0 0 15px #ffae00;
+    animation: flicker 0.5s infinite alternate;
+  }
+
+  @keyframes flicker {
+    from { transform: scale(1) rotate(-2deg); }
+    to { transform: scale(1.08) rotate(2deg); }
+  }
+
+  .tier {
+    background: #f5ebd6;
+    border: 1.5px solid #d4c3a3;
+    border-radius: 10px 10px 4px 4px;
+  }
+  .tier-top { width: 90px; height: 35px; }
+  .tier-mid { width: 130px; height: 40px; }
+  .tier-bot { width: 170px; height: 45px; }
+
+  /* Screen 4: Gifts */
+  .gift-options {
+    display: flex;
+    justify-content: center;
+    gap: 25px;
+    margin-top: 20px;
+  }
+
+  .gift-box {
+    cursor: pointer;
+    transition: transform 0.2s;
+  }
+
+  .gift-box:hover {
+    transform: translateY(-5px);
+  }
+
+  .gift-circle {
+    width: 85px;
+    height: 85px;
+    border-radius: 50%;
+    border: 1.5px solid #d4c3a3;
+    background: #fff;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 32px;
+    margin-bottom: 10px;
+  }
+
+  /* Modal for Letter & Memories */
+  .modal {
+    display: none;
+    position: fixed;
+    top: 0; left: 0; width: 100%; height: 100%;
+    background: rgba(0,0,0,0.5);
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+    z-index: 10;
+  }
+
+  .modal-content {
+    background: #fdfbf7;
+    padding: 25px;
+    border-radius: 20px;
+    max-width: 360px;
+    width: 100%;
+    text-align: left;
+    max-height: 80vh;
+    overflow-y: auto;
+    border: 1px solid #d4c3a3;
+  }
+
+  .close-btn {
+    margin-top: 20px;
+    width: 100%;
+    padding: 10px;
+    background: #d4c3a3;
+    color: #fff;
+    border: none;
+    border-radius: 10px;
+    font-weight: bold;
+    cursor: pointer;
+  }
+
+  .memory-item {
+    background: #fff;
+    padding: 12px;
+    border-radius: 12px;
+    border: 1px solid #ede4d3;
+    margin-bottom: 12px;
+  }
+</style>
+</head>
+<body>
+
+<div class="container">
+  
+  <!-- SCREEN 1: PASSCODE -->
+  <div id="screen1" class="screen active">
+    <h1>Enter Code</h1>
+    <p class="subtitle">Hint: ချစ်သူလေးရဲ့ မွေးနေ့လျှို့ဝှက်နံပါတ် (1234)</p>
+    
+    <div class="code-dots" id="dots">
+      <div class="dot">🤍</div>
+      <div class="dot">🤍</div>
+      <div class="dot">🤍</div>
+      <div class="dot">🤍</div>
+    </div>
+
+    <div class="keypad">
+      <button class="key" onclick="pressKey('1')">1</button>
+      <button class="key" onclick="pressKey('2')">2</button>
+      <button class="key" onclick="pressKey('3')">3</button>
+      <button class="key" onclick="pressKey('4')">4</button>
+      <button class="key" onclick="pressKey('5')">5</button>
+      <button class="key" onclick="pressKey('6')">6</button>
+      <button class="key" onclick="pressKey('7')">7</button>
+      <button class="key" onclick="pressKey('8')">8</button>
+      <button class="key" onclick="pressKey('9')">9</button>
+      <button class="key action" onclick="clearCode()">CLR</button>
+      <button class="key" onclick="pressKey('0')">0</button>
+      <button class="key action" onclick="delCode()">DEL</button>
+    </div>
+  </div>
+
+  <!-- SCREEN 2: HOLD HEART -->
+  <div id="screen2" class="screen">
+    <h1>အသည်းပုံလေးကို ဖိကြည့်</h1>
+    <p class="subtitle">အသည်းပုံပေါ်ကို ဖိထားပေးနော်။ လက်မလွှတ်ဘဲ ခဏလေးစောင့်လိုက်။</p>
+    
+    <div class="heart-btn-wrapper">
+      <svg class="progress-ring" width="120" height="120">
+        <circle id="progressCircle" stroke="#d98a8a" stroke-width="4" fill="transparent" r="54" cx="60" cy="60" stroke-dasharray="339.292" stroke-dashoffset="339.292"/>
+      </svg>
+      <div class="heart-btn" id="heartBtn">🤍</div>
+    </div>
+  </div>
+
+  <!-- SCREEN 3: MAKE A WISH -->
+  <div id="screen3" class="screen">
+    <h1>Make a Wish</h1>
+    <p class="subtitle">ကလေးလေးရေ မျက်စိလေးမှိတ်ပြီး ဆုတောင်းလိုက်နော်။<br><b>HAPPY BIRTHDAY ပါ ချစ်ရသူလေး</b></p>
+
+    <div class="cake-container" onclick="blowCandle()">
+      <div class="candle">
+        <div class="flame" id="flame"></div>
+      </div>
+      <div class="tier tier-top"></div>
+      <div class="tier tier-mid"></div>
+      <div class="tier tier-bot"></div>
+    </div>
+
+    <p class="subtitle" id="blowHint">ဖယောင်းတိုင်ကို နှိပ်ပြီး မီးမှုတ်ပါ</p>
+  </div>
+
+  <!-- SCREEN 4: GIFT FOR U -->
+  <div id="screen4" class="screen">
+    <h1>Gift for u</h1>
+    <p class="subtitle">လက်ဆောင် နှစ်ခု စီစဉ်ထားတယ်</p>
+
+    <div class="gift-options">
+      <div class="gift-box" onclick="openModal('letterModal')">
+        <div class="gift-circle">🎁</div>
+        <div><b>Letter</b></div>
+      </div>
+      <div class="gift-box" onclick="openModal('memoryModal')">
+        <div class="gift-circle">💝</div>
+        <div><b>Memories</b></div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<!-- LETTER MODAL -->
+<div id="letterModal" class="modal">
+  <div class="modal-content">
+    <h2 style="margin-bottom: 12px; color: #4a3c2c;">သို့... ချစ်ရသူလေး 💌</h2>
+    <p style="line-height: 1.8; font-size: 15px;">
+      ပျော်ရွှင်စရာ မွေးနေ့လေး ဖြစ်ပါစေ ကလေးလေးရေ။ <br><br>
+      ဒီနေ့ကစပြီး နောင်နှစ်ပေါင်းများစွာတိုင်အောင် စိတ်ချမ်းသာ ကိုယ်ကျန်းမာနဲ့ ဖြစ်ချင်တဲ့ ဆန္ဒတွေအားလုံး ပြည့်ဝပါစေလို့ ဆုတောင်းပေးပါတယ်။ <br><br>
+      ကိုယ့်ဘေးနားမှာ အမြဲတမ်း ပြုံးပျော်နေပေးပါနော်။ အရမ်းချစ်တယ် ❤️
+    </p>
+    <button class="close-btn" onclick="closeModal('letterModal')">ပိတ်မည်</button>
+  </div>
+</div>
+
+<!-- MEMORIES MODAL -->
+<div id="memoryModal" class="modal">
+  <div class="modal-content">
+    <h2 style="margin-bottom: 12px; color: #4a3c2c;">တို့နှစ်ယောက်ရဲ့ အမှတ်တရများ ✨</h2>
+    <div class="memory-item">
+      <b>🗓️ စတင်တွေ့ဆုံခဲ့တဲ့နေ့</b>
+      <p style="font-size: 14px; margin-top: 4px;">မင်းလေးကို စတွေ့ကတည်းက ကိုယ့်ဘဝလေး ပိုပြီး အဓိပ္ပာယ်ရှိလာခဲ့တာပါ။</p>
+    </div>
+    <div class="memory-item">
+      <b>☕ အတူသွားခဲ့တဲ့ နေရာလေးတွေ</b>
+      <p style="font-size: 14px; margin-top: 4px;">အတူတူ စားခဲ့သောက်ခဲ့ ရယ်မောခဲ့ရတဲ့ အချိန်တိုင်းက ကိုယ့်အတွက် အဖိုးမဖြတ်နိုင်ပါဘူး။</p>
+    </div>
+    <div class="memory-item">
+      <b>🎂 ဒီနေ့ မွေးနေ့လေး</b>
+      <p style="font-size: 14px; margin-top: 4px;">နောက်နှစ် မွေးနေ့တွေတိုင်းလည်း အခုလိုပဲ အတူတူ ဖြတ်သန်းသွားကြမယ်နော်။</p>
+    </div>
+    <button class="close-btn" onclick="closeModal('memoryModal')">ပိတ်မည်</button>
+  </div>
+</div>
+
+<script>
+  // --- SETTINGS (ဒီနေရာမှာ လျှို့ဝှက်နံပါတ် ပြင်နိုင်ပါတယ်) ---
+  const CORRECT_CODE = "1234"; 
+  // ---------------------------------------------------
+
+  let currentCode = "";
+
+  function updateDots() {
+    const dots = document.querySelectorAll('.dot');
+    dots.forEach((dot, index) => {
+      dot.textContent = index < currentCode.length ? '❤️' : '🤍';
+    });
+  }
+
+  function pressKey(num) {
+    if (currentCode.length < 4) {
+      currentCode += num;
+      updateDots();
+      if (currentCode.length === 4) {
+        setTimeout(() => {
+          if (currentCode === CORRECT_CODE) {
+            goToScreen('screen2');
+          } else {
+            alert("လျှို့ဝှက်နံပါတ် မှားနေပါတယ်နော် ပြန်ရိုက်ကြည့်ပါ!");
+            clearCode();
+          }
+        }, 300);
+      }
+    }
+  }
+
+  function clearCode() {
+    currentCode = "";
+    updateDots();
+  }
+
+  function delCode() {
+    currentCode = currentCode.slice(0, -1);
+    updateDots();
+  }
+
+  function goToScreen(screenId) {
+    document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+    document.getElementById(screenId).classList.add('active');
+  }
+
+  // Screen 2: Hold Heart Logic
+  const heartBtn = document.getElementById('heartBtn');
+  const circle = document.getElementById('progressCircle');
+  const circumference = 2 * Math.PI * 54;
+  let holdTimer;
+  let progress = 0;
+
+  function startHold(e) {
+    e.preventDefault();
+    heartBtn.textContent = '❤️';
+    holdTimer = setInterval(() => {
+      progress += 4;
+      const offset = circumference - (progress / 100) * circumference;
+      circle.style.strokeDashoffset = offset;
+      if (progress >= 100) {
+        clearInterval(holdTimer);
+        goToScreen('screen3');
+      }
+    }, 50);
+  }
+
+  function endHold() {
+    clearInterval(holdTimer);
+    if (progress < 100) {
+      progress = 0;
+      circle.style.strokeDashoffset = circumference;
+      heartBtn.textContent = '🤍';
+    }
+  }
+
+  heartBtn.addEventListener('mousedown', startHold);
+  heartBtn.addEventListener('touchstart', startHold);
+  window.addEventListener('mouseup', endHold);
+  window.addEventListener('touchend', endHold);
+
+  // Screen 3: Blow Candle Logic
+  function blowCandle() {
+    const flame = document.getElementById('flame');
+    if (flame.style.display !== 'none') {
+      flame.style.display = 'none';
+      document.getElementById('blowHint').textContent = "ဆုတောင်းပြည့်ပါစေ... ✨";
+      setTimeout(() => {
+        goToScreen('screen4');
+      }, 1500);
+    }
+  }
+
+  // Screen 4: Modals
+  function openModal(id) {
+    document.getElementById(id).style.display = 'flex';
+  }
+
+  function closeModal(id) {
+    document.getElementById(id).style.display = 'none';
+  }
+</script>
+
+</body>
+</html>
